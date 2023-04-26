@@ -1,3 +1,5 @@
+from datetime import datetime
+from time import strftime
 from selenium import webdriver
 import time
 import pandas as pd
@@ -14,9 +16,10 @@ import credenciais
 #iniciando a classe JMS
 
 class jms():
+
     def __init__(self):
         self.site = 'https://jmsbr.jtjms-br.com/'
-        self.driver = webdriver.Chrome (executable_path='C:\\chromedriver\\chromedriver.exe') #caminho onde se encontra o webdriver
+        self.driver = webdriver.Chrome (executable_path='U:\\RELATORIOS\\Extravios_automacao\\chrome_version_112\\chromedriver.exe') #caminho onde se encontra o webdriver
         self.driver.maximize_window() # Maximiza o navegador
 
     #abrindo o site do JMS
@@ -26,9 +29,11 @@ class jms():
 
     #Mudando o idioma para português
     def idioma(self):
+        #clica para expandir as opções
         self.driver.find_element("xpath",'//*[@id="gateway"]/div[1]/div[1]/div/div[1]/div[1]/input').click()
-        time.sleep(1)
-        self.driver.find_element("xpath", '/html/body/div[2]/div[1]/div[1]/ul/li[3]').click()
+        time.sleep(2)
+        #Clica na opçao "Portugal"
+        self.driver.find_element("xpath", '/html/body/div[3]/div[1]/div[1]/ul/li[3]').click()
         time.sleep(2)
 
     #informando login e senha
@@ -42,9 +47,14 @@ class jms():
         senha.click()
         time.sleep(1)
         senha.send_keys(credenciais.senha_jms)
-        time.sleep(2)
+        time.sleep(5)
+        conectar = self.driver.find_element("xpath", '//*[@id="gateway"]/div[1]/div[1]/div/div[3]/div/form/button')
+        conectar.click()
+        time.sleep(20)
 
-    #Resolvendo o captcha com o anticaptcha
+      # Essa API está comentando porque não está sendo mais utilizada para fazer a quebra do captcha
+     # A quebra do captcha será feita de forma manual e o programa irá esperar 20 segundos para que possa ser feito
+    ''' #Resolvendo o captcha com o anticaptcha
     def captcha(self):
         with open('captcha.jpeg','wb') as file:
             captcha_image = self.driver.find_element("xpath", '//*[@id="gateway"]/div[1]/div[1]/div/div[3]/div/form/div[3]/div/div[2]/img')
@@ -65,6 +75,7 @@ class jms():
                 print("Task finishes with error"+ solver.solver_error) #Se for igual, irá aparecer um erro
 
             # Fim da API
+            
             campo_captcha = self.driver.find_element("xpath",'//*[@id="gateway"]/div[1]/div[1]/div/div[3]/div/form/div[3]/div/div[1]/input')
             campo_captcha.click() #seleciona o campo
             time.sleep(2)
@@ -73,7 +84,7 @@ class jms():
         #clicar em "conecte-se"
             conectar = self.driver.find_element("xpath",'//*[@id="gateway"]/div[1]/div[1]/div/div[3]/div/form/button')
             conectar.click()
-            time.sleep(15)
+            time.sleep(15)'''
 
     # Acessando o local da pesquisa
     def acessando_arbitragem(self):
@@ -93,17 +104,19 @@ class jms():
     #Digitando o Id e obter o valor
     def pedido_valor(self):
 
-        #carregando a planilha
-        extravios = "C:\\Users\\arthur.lopes\\Documents\\Python\\Nova pasta\\extravios_01.xlsx"
+        #carregando a planilha onde está as informações dos pacotes
+        extravios = "U:\\RELATORIOS\\Extravios_automacao\\extravios.xlsx"
         df = pd.read_excel(extravios)
         idpedido = self.driver.find_element("xpath",'//*[@id="__qiankun_subapp_wrapper_for_vue_service_quality_index__"]/div/div/div/div[1]/div/div/div[1]/div[1]/div[2]/div[2]/span[2]/div[1]/input')
-
+        idpedido.click()
+        time.sleep(2)
         lista_pedido = [] #Lista de IDPEDIDO
         lista_valor = [] #Lista de valor_nota
 
         # loop para digitar o idpedido e obter o valor da nota_valor
         for index,row in df.iterrows():
-            idpedido.send_keys(str(row['ID'])) #pegar o ID da planilha
+            # pegar o ID da planilha
+            idpedido.send_keys(str(row['ID']))
             time.sleep(2)
             numero = self.driver.find_element("xpath",'//*[@id="__qiankun_subapp_wrapper_for_vue_service_quality_index__"]/div/div/div/div[1]/div/div/div[1]/div[1]/div[2]/div[4]/span[2]/div[1]/input')
             valornota = numero.get_property('value') #obter o valor da caixa de texto
@@ -116,10 +129,19 @@ class jms():
             time.sleep(1)
             idpedido.clear()
 
+        #Cria um dataframe
         df = pd.DataFrame(zip(lista_pedido,lista_valor),columns=['idpedido','valor_nota']) # Transforma a lista em dataframe
         print(df) # exibe o dataframe
-        df.to_excel('homologacao06-03-2023.xlsx', index=False) # Salva o dataframe em excel.
+        #Criando variavel para salvar com a data e horario.
+        #data_hoje = time.strftime("%Y-%m-%d_%H:%M:%S")
+        #agora_string = data = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
+
+        #Irá salvar o arquivo em excel com a data e hora atual
+        df.to_excel("U:\\RELATORIOS\\Extravios_automacao\\relatorio.xlsx", index=False) # Salva o dataframe em excel.
         time.sleep(5)
+        self.driver.close()
+        quit()
+
 
 
 
@@ -129,6 +151,6 @@ sistema = jms()
 sistema.abrir_site()
 sistema.idioma()
 sistema.login_senha()
-sistema.captcha()
+#sistema.captcha()
 sistema.acessando_arbitragem()
 sistema.pedido_valor()
