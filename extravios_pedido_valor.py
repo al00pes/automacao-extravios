@@ -18,7 +18,7 @@ import credenciais
 class jms():
 
     def __init__(self):
-        self.site = 'https://jmsbr.jtjms-br.com/'
+        self.site = '##########'
         self.driver = webdriver.Chrome (executable_path='U:\\RELATORIOS\\Extravios_automacao\\chrome_version_112\\chromedriver.exe') #caminho onde se encontra o webdriver
         self.driver.maximize_window() # Maximiza o navegador
 
