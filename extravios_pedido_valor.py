@@ -13,9 +13,9 @@ import sys
 import credenciais
 
 
-#iniciando a classe JMS
+#iniciando a classe sistema
 
-class jms():
+class sistema():
 
     def __init__(self):
         self.site = '##########'
@@ -147,7 +147,7 @@ class jms():
 
 
 
-sistema = jms()
+sistema = sistema()
 sistema.abrir_site()
 sistema.idioma()
 sistema.login_senha()
