@@ -4,7 +4,7 @@ Este projeto utiliza Python, Selenium e anti-captcha para automatizar o processo
 
 ## Descrição do Projeto
 
-O objetivo deste projeto é automatizar a extração de dados de um site, que anteriormente era realizada manualmente por vários colaboradores. Com a automação, a tarefa que antes demorava dias para ser concluída agora é finalizada em aproximadamente 30 minutos, resultando em um ganho de tempo de até 80%. Essa eficiência permite que os colaboradores sejam realocados para outras tarefas.
+O objetivo deste projeto é automatizar a extração de dados de um site, que anteriormente era realizada manualmente por vários colaboradores. Com a automação, a tarefa que antes demorava dias para ser concluída agora é finalizada em aproximadamente 30 minutos, resultando em um ganho de tempo. Essa eficiência permite que os colaboradores sejam realocados para outras tarefas.
 
 ## Funcionalidades
 
