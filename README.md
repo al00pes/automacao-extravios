@@ -17,8 +17,7 @@ O objetivo deste projeto é automatizar a extração de dados de um site, que an
 
 ## Estrutura do Projeto
 
-- `main.py`: Script principal que realiza a automação.
-- `requirements.txt`: Lista de dependências necessárias para rodar o projeto.
+- `extravios_pedido_valor.py`: Script principal que realiza a automação.
 - `input.xlsx`: Arquivo Excel com os dados de entrada.
 - `output.csv`: Arquivo com os dados capturados e exportados.
 
